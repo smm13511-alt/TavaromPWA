@@ -1,0 +1,35 @@
+{
+  "name": "تورم‌نما | مبنای ۱۳۹۵ - Ver 10.01 PWA",
+  "short_name": "تورم‌نما",
+  "description": "محاسبه ارزش به‌روز شده با شاخص CPI مبنای ۱۳۹۵ - نسخه PWA قابل نصب و آفلاین",
+  "id": "./index.html",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "dir": "rtl",
+  "lang": "fa",
+  "background_color": "#FAF7F0",
+  "theme_color": "#0A3B2E",
+  "categories": ["finance", "utilities"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%230A3B2E'/%3E%3Cpolygon points='256,90 90,210 422,210' fill='none' stroke='%23C6A15B' stroke-width='22' stroke-linejoin='round'/%3E%3Ctext x='256' y='370' text-anchor='middle' font-family='Georgia,serif' font-size='130' font-weight='900' fill='%23FAF7F0'%3ESMM%3C/text%3E%3C/svg%3E",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

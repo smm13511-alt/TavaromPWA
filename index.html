@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0A3B2E">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="تورم‌نما">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%230A3B2E'/%3E%3Ctext x='256' y='330' text-anchor='middle' font-family='Georgia' font-size='130' font-weight='900' fill='%23FAF7F0'%3ESMM%3C/text%3E%3C/svg%3E">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>تورم‌نما | مبنای ۱۳۹۵ - Ver 10.01 PWA</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#FAF7F0;color:#1F2A24;font-family:Vazirmatn,Tahoma,sans-serif;padding-bottom:100px}
+body.dark{background:#0F1A15;color:#F5EAD0}
+body.dark .card,body.dark .total-sticky,body.dark input,body.dark select,body.dark .hist-table{background:#1B2721;color:#F5EAD0;border-color:#3A4A42}
+body.dark label,body.dark .brand-title{color:#F5EAD0}
+body.dark .hist-table td{background:#1B2721}
+body.dark tr.even td{background:#222f28}
+body.dark .cpi-box{background:#222f28;border-color:#3A4A42}
+body.dark .hist-item{background:#1B2721;border-color:#3A4A42;color:#F5EAD0}
+body.dark .hist-item div{color:#F5EAD0 !important}
+body.dark .hist-item div[style*="006845"]{color:#7FD6A8 !important}
+body.dark .hist-item div[style*="777"]{color:#E8DCC0 !important}
+body.dark .agree-box{background:#1B2721;color:#F5EAD0;border-color:#3A4A42}
+body.dark .agree-text{background:#222f28;color:#F5EAD0;border-color:#3A4A42}
+#splash{position:fixed;inset:0;z-index:100;background:radial-gradient(circle at 50% 28%,#11573f 0%,#0A3B2E 55%,#06281F 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff}
+.splash-title{font-size:44px;font-weight:900;margin-top:8px}
+.splash-beta{margin-top:6px;background:rgba(198,161,91,.2);border:1px solid #C6A15B;padding:4px 14px;border-radius:99px;font-size:13px}
+.splash-bar{width:210px;height:6px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden;margin-top:14px}
+.splash-bar span{display:block;height:100%;width:40%;background:#C6A15B;border-radius:99px;animation:load 1.5s infinite}
+@keyframes load{0%{transform:translateX(120%)}100%{transform:translateX(-320%)}}
+.agree-overlay{position:fixed;inset:0;z-index:200;background:rgba(6,40,31,.88);display:flex;align-items:center;justify-content:center;padding:16px}
+.agree-box{background:#fff;border:2px solid #C6A15B;border-radius:14px;max-width:440px;width:100%;padding:14px;max-height:86vh;overflow:auto;color:#1F2A24}
+.agree-box h3{margin:0 0 4px;text-align:center;color:#0A3B2E}
+body.dark .agree-box h3{color:#F5EAD0}
+.agree-text{font-size:12.5px;line-height:2;background:#FAF7F0;border:1px solid #EADFC8;border-radius:10px;padding:8px;margin:8px 0;max-height:230px;overflow:auto}
+.agree-row{display:flex;gap:8px;margin-top:10px}
+.agree-row button{flex:1;padding:10px;border-radius:10px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
+.agree-ok{background:#006845;color:#fff;border:none}
+.agree-no{background:#fff;border:2px solid #C8102E;color:#C8102E}
+.brand-top{position:sticky;top:8px;max-width:480px;margin:6px auto;padding:6px 10px;background:#fff;border:2px solid #C6A15B;border-radius:12px;z-index:30}
+.brand-row{display:flex;align-items:center;gap:10px}
+.brand-row>div:last-child{flex:1;text-align:center}
+.brand-title,.brand-sub,.header-bale{text-align:center}
+.brand-title{font-size:15px;font-weight:900;color:#0A3B2E}
+.brand-sub{font-size:10px;color:#777}
+.beta-mini{font-size:10px;background:#0A3B2E;color:#F5EAD0;padding:1px 8px;border-radius:99px}
+.header-bale{margin-top:2px;font-size:11px}
+.header-bale a{color:#006845;text-decoration:none;font-weight:700}
+main{max-width:480px;margin:0 auto;padding:10px 12px}
+.card{background:#fff;border:1px solid #EADFC8;border-radius:14px;padding:12px;margin:10px 0}
+label{display:block;font-size:13px;margin:8px 0 4px;color:#0A3B2E;font-weight:800}
+input[type=text],select{width:100%;padding:10px;border:1.5px solid #D9CFAE;border-radius:10px;font-family:inherit;font-size:15px;background:#fff}
+input.amt-empty{border:2px solid #C8102E !important;background:#FFF5F5}
+input.amt-filled{border:2.5px solid #006845 !important;background:#EAF7F0}
+.amt-hint{font-size:12px;margin-top:4px}
+.amt-hint.need{color:#C8102E}
+.amt-hint.ok{color:#006845}
+.cpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sel-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.btn-grid button{min-height:48px;border:none;border-radius:10px;font-family:inherit;font-weight:800;cursor:pointer;font-size:14px}
+.btn-calc{background:#006845;color:#fff}
+.btn-ex{background:#0A3B2E;color:#F5EAD0}
+.btn-copy,.btn-share{background:#fff;border:2px solid #C6A15B !important;color:#0A3B2E}
+.btn-clear{grid-column:1/-1;background:#C8102E;color:#fff}
+.res{margin-top:12px;background:#EAF7F0;border:1.5px solid #006845;border-radius:12px;padding:12px;font-weight:800;color:#0A3B2E;line-height:1.9}
+.res.err{background:#FFF0F0;border-color:#C8102E;color:#C8102E}
+.calc-modes{display:flex;gap:8px;margin-bottom:6px}
+.calc-modes button{flex:1;padding:10px;border-radius:10px;border:2px solid #C6A15B;background:#fff;font-weight:800;font-family:inherit;cursor:pointer}
+.calc-modes button.active{background:#0A3B2E;color:#fff}
+.cpi-box{background:#FFF8E6;border:1px dashed #C6A15B;border-radius:10px;padding:8px;margin-top:10px;font-size:12px;line-height:2}
+.cpi-box button{padding:7px 10px;border-radius:9px;border:2px solid #0A3B2E;background:#0A3B2E;color:#fff;font-family:inherit;font-weight:800;font-size:12px;cursor:pointer;margin-top:4px}
+.bottom-nav{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);width:calc(100% - 20px);max-width:480px;background:#0A3B2E;border:2px solid #C6A15B;border-radius:14px;display:flex;justify-content:space-around;padding:8px;z-index:30}
+.bottom-nav button{background:transparent;color:#F5EAD0;border:none;font-family:inherit;font-weight:700;padding:8px 4px;cursor:pointer;font-size:20px;line-height:1}
+.bottom-nav button.active{background:#C6A15B;color:#0A3B2E;border-radius:10px}
+.bottom-nav #histCount{font-size:11px}
+.chart-type-row{display:flex;gap:8px;margin:10px 0}
+.chart-type-row button{flex:1;padding:9px;border-radius:10px;border:2px solid #C6A15B;background:#fff;font-weight:800;font-family:inherit;cursor:pointer}
+.chart-type-row button.active{background:#006845;color:#fff}
+.chart-legend{display:flex;gap:16px;font-size:12px;margin:6px 0}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-left:5px}
+#chartCv{width:100%;height:230px;background:#fff;border:1px solid #EADFC8;border-radius:12px}
+#chartTip{position:absolute;pointer-events:none;background:rgba(10,59,46,.96);color:#fff;padding:8px 10px;border-radius:10px;font-size:12px;display:none;white-space:pre-line;max-width:240px;line-height:1.8;top:10px;right:10px}
+.chart-bar-note{font-size:12px;color:#555;background:#FFF8E6;border:1px dashed #C6A15B;border-radius:10px;padding:6px 8px;margin-top:6px;line-height:1.9}
+.total-sticky{position:sticky;top:92px;background:#fff;border:2px solid #C6A15B;border-radius:12px;padding:10px;text-align:center;z-index:5}
+#totalOrig{font-size:13px;color:#777}
+#totalSum{font-size:26px;font-weight:900;color:#006845}
+.hist-view-row{display:flex;gap:8px;margin:8px 0}
+.hist-view-row button{flex:1;padding:9px;border-radius:10px;border:2px solid #C6A15B;background:#fff;font-weight:800;font-family:inherit;cursor:pointer;font-size:13px;color:#0A3B2E}
+.hist-view-row button.active{background:#006845;color:#fff;border-color:#006845}
+.hist-sort-row{display:flex;gap:8px;margin:8px 0}
+.hist-sort-row button{flex:1;padding:9px;border-radius:10px;border:2px solid #C6A15B;background:#fff;font-weight:800;font-family:inherit;cursor:pointer;font-size:13px;color:#0A3B2E}
+.hist-sort-row button.active{background:#0A3B2E;color:#fff;border-color:#0A3B2E}
+.hist-sort-note{font-size:11px;color:#777;margin:2px 0 6px;line-height:1.9;text-align:center}
+.hist-actions-row{display:flex;gap:8px;margin:8px 0 2px}
+.hist-actions-row button{flex:1;padding:9px;border-radius:10px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px;border:2px solid #0A3B2E;background:#0A3B2E;color:#fff}
+.hist-actions-row button.excel{background:#fff;color:#0A3B2E;border-color:#C6A15B}
+.hist-item{background:#fff;border:1px solid #EADFC8;border-radius:12px;padding:10px;margin:8px 0}
+.hist-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.hist-table{width:100%;border-collapse:collapse;font-size:12px;background:#fff;border:1px solid #EADFC8;min-width:680px}
+.hist-table th{background:#0A3B2E;color:#F5EAD0;padding:6px 4px;font-size:12px;white-space:nowrap;line-height:1.6;vertical-align:middle;height:44px}
+.hist-table td{border:1px solid #EADFC8;padding:4px 4px;text-align:center;line-height:1.6;white-space:nowrap;font-size:12px}
+tr.even td{background:#FAF7F0}
+.tbl-del{background:#C8102E;color:#fff;border:none;border-radius:6px;padding:4px 8px;font-family:inherit;font-size:12px;cursor:pointer}
+option:disabled{color:#999;background:#eee}
+.var-line{border-top:1px dashed #EADFC8;padding:6px 0;font-size:13px}
+.help-step{background:#FAF7F0;border:1px solid #EADFC8;border-radius:10px;padding:8px;margin:6px 0;font-size:13px}
+.help-example{background:#0A3B2E;color:#F5EAD0;border-radius:10px;padding:10px;font-size:13px;line-height:2}
+.formula{text-align:center;direction:ltr;background:#0A3B2E;color:#F5EAD0;border-radius:10px;padding:10px;font-weight:800;margin:8px 0}
+.upd-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.upd-list{font-size:12px;margin-top:6px;line-height:2}
+.upd-item{background:#FAF7F0;border:1px solid #EADFC8;border-radius:8px;padding:6px 8px;margin:4px 0}
+#printArea{display:none}
+@page{size:auto;margin:10mm}
+@media print{
+body{background:#fff;padding:0;margin:0}
+.brand-top,.bottom-nav,#view-calc,#view-chart,#view-help,.no-print,#totalList,#totalTableWrap,.total-sticky{display:none !important}
+main{max-width:100%;padding:0;margin:0}
+#view-total{display:block !important}
+#printArea{display:block !important;color:#000;width:100%;max-width:100%;margin:0 auto;padding:0 2mm;box-sizing:border-box;overflow:hidden}
+#printArea table{width:100%;max-width:100%;border-collapse:collapse;direction:rtl;font-size:11px;table-layout:auto}
+#printArea th{background:#C6A15B !important;color:#0A3B2E !important;border:1px solid #8A6D2B;padding:6px 3px;white-space:normal;word-break:break-word;line-height:1.6;vertical-align:middle}
+#printArea td{border:1px solid #999;padding:4px 3px;text-align:center;white-space:normal;word-break:break-word;line-height:1.6}
+#printArea div{max-width:100%;box-sizing:border-box}
+}
+</style>
+</head>
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){});});}
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;var b=document.getElementById('pwaInstallBtn');if(b)b.style.display='block';});
+function pwaInstall(){if(!deferredPrompt)return;deferredPrompt.prompt();deferredPrompt.userChoice.then(function(){deferredPrompt=null;var b=document.getElementById('pwaInstallBtn');if(b)b.style.display='none';});}
+window.addEventListener('load',function(){if(document.getElementById('pwaInstallBtn'))return;var b=document.createElement('button');b.id='pwaInstallBtn';b.innerHTML='نصب برنامه';b.onclick=pwaInstall;b.style.cssText='position:fixed;bottom:70px;left:50%;transform:translateX(-50%);z-index:99;display:none;background:#C6A15B;color:#0A3B2E;border:none;border-radius:99px;padding:10px 22px;font-family:inherit;font-weight:800;box-shadow:0 4px 14px rgba(0,0,0,.3)';document.body.appendChild(b);});
+</script>
+<body>
+<div id="agreeOverlay" class="agree-overlay" style="display:none">
+<div class="agree-box">
+<h3>توافق‌نامه کاربر تورم‌نما</h3>
+<div style="font-size:12px;text-align:center">Ver 10.01 PWA | مبنای ۱۳۹۵</div>
+<div class="agree-text">۱- نتایج برنامه جنبه اطلاع‌رسانی دارد و با فرمول مبلغ × شاخص محاسبه ÷ شاخص واریز محاسبه می‌شود.<br>۲- شاخص‌ها ممکن است اصلاح یا با تأخیر منتشر شوند و نتیجه قطعی نیست.<br>۳- مسئولیت هر تصمیم مالی با کاربر است و برنامه مشاوره مالی ارائه نمی‌دهد.<br>۴- داده‌ها فقط روی همین دستگاه ذخیره می‌شود و ارسال نمی‌شود.<br>۵- متن کامل در فایل توافق‌نامه نصب آمده است.</div>
+<div style="font-size:11px;color:#555;line-height:1.9;text-align:center">با انتخاب «می‌پذیرم» مسئولیت استفاده از نتایج را می‌پذیرید.</div>
+<div class="agree-row"><button class="agree-ok" onclick="acceptAgree()">می‌پذیرم</button><button class="agree-no" onclick="declineAgree()">نمی‌پذیرم</button></div>
+</div>
+</div>
+<div id="splash">
+<svg width="190" height="146" viewBox="0 0 300 230"><polygon points="150,18 28,88 272,88" fill="#0A3B2E" stroke="#C6A15B" stroke-width="8"></polygon><text x="150" y="185" text-anchor="middle" font-family="Georgia,serif" font-size="102" font-weight="900" fill="#FAF7F0" stroke="#C6A15B" stroke-width="1">SMM</text></svg>
+<div class="splash-title">تورم‌نما</div>
+<div class="splash-beta">Ver 10.01 PWA - نسخه بتا - آزمایشی</div>
+<div class="splash-bar"><span></span></div>
+</div>
+<div class="brand-top" id="brandTop">
+<div class="brand-row">
+<svg width="32" height="26" viewBox="0 0 300 230"><polygon points="150,18 28,88 272,88" fill="#0A3B2E" stroke="#C6A15B" stroke-width="14"></polygon><text x="150" y="195" text-anchor="middle" font-family="Georgia,serif" font-size="102" font-weight="900" fill="#0A3B2E">SMM</text></svg>
+<div>
+<div class="brand-title">تورم‌نما | مبنای ۱۳۹۵</div>
+<div class="brand-sub">نسخه بتا - آزمایشی <span class="beta-mini">Ver 10.01 PWA</span></div>
+<div class="header-bale"><a href="https://ble.ir/join/MGMzYmRhMz"><span dir="ltr">@bankiclub</span></a></div>
+</div>
+</div>
+</div>
+<main>
+<div id="view-calc">
+<div class="calc-modes"><button id="btnModeMonth" class="active" onclick="switchCalcMode('month')">محاسبه ماهانه</button><button id="btnModeYear" onclick="switchCalcMode('year')">محاسبه سالانه</button></div>
+<div id="paneMonth">
+<div class="card">
+<label>مبلغ واریز — تومان</label>
+<input id="xAmt" type="text" inputmode="decimal" autocomplete="off" class="amt-empty" oninput="formatInputEl(this);saveDraft()">
+<div id="amtHint" class="amt-hint need">مبلغ را وارد کنید</div>
+<div class="sel-grid">
+<div><label>سال واریز</label><select id="selYY" onchange="refreshMonthAvailability();saveDraft()"></select></div>
+<div><label>ماه واریز</label><select id="selMY" onchange="autoFillCPI();saveDraft()"></select></div>
+</div>
+<div class="sel-grid">
+<div><label>سال محاسبه</label><select id="selYN" onchange="refreshMonthAvailability();saveDraft()"></select></div>
+<div><label>ماه محاسبه</label><select id="selMN" onchange="autoFillCPI();saveDraft()"></select></div>
+</div>
+<div class="cpi-grid">
+<div><label>شاخص تورم زمان واریز</label><input id="xOld" type="text" inputmode="decimal" autocomplete="off" oninput="formatInputEl(this)"></div>
+<div><label>شاخص تورم زمان محاسبه</label><input id="xNew" type="text" inputmode="decimal" autocomplete="off" oninput="formatInputEl(this)"></div>
+</div>
+<div id="cpiSrcLine" style="font-size:11px;color:#777;margin-top:6px;text-align:center;line-height:1.9">شاخص‌ها از منبع داخلی برنامه استخراج شده‌اند</div>
+<div class="btn-grid">
+<button class="btn-calc" onclick="doCalc(false,false)">محاسبه</button>
+<button class="btn-ex" onclick="fillExample(false)">مثال</button>
+<button class="btn-copy" onclick="copyLast()">کپی نتیجه</button>
+<button class="btn-share" onclick="shareLast()">اشتراک</button>
+<button class="btn-clear" onclick="clearForm(false)">پاک کردن</button>
+</div>
+<div id="res" class="res" style="display:none"></div>
+</div>
+</div>
+<div id="paneYear" style="display:none">
+<div class="card">
+<label>مبلغ واریز — تومان</label>
+<input id="xAmt_A" type="text" inputmode="decimal" autocomplete="off" class="amt-empty" oninput="formatInputEl(this);saveDraft()">
+<div id="amtHint_A" class="amt-hint need">مبلغ را وارد کنید</div>
+<div class="sel-grid">
+<div><label>سال واریز</label><select id="selYY_A" onchange="autoFillCPI_A();saveDraft()"></select></div>
+<div><label>سال محاسبه</label><select id="selYN_A" onchange="autoFillCPI_A();saveDraft()"></select></div>
+</div>
+<div class="cpi-grid">
+<div><label>شاخص تورم زمان واریز</label><input id="xOld_A" type="text" inputmode="decimal" autocomplete="off" oninput="formatInputEl(this)"></div>
+<div><label>شاخص تورم زمان محاسبه</label><input id="xNew_A" type="text" inputmode="decimal" autocomplete="off" oninput="formatInputEl(this)"></div>
+</div>
+<div id="cpiSrcLine_A" style="font-size:11px;color:#777;margin-top:6px;text-align:center;line-height:1.9">شاخص‌ها از منبع داخلی برنامه استخراج شده‌اند</div>
+<div class="btn-grid">
+<button class="btn-calc" onclick="doCalc(true,false)">محاسبه</button>
+<button class="btn-ex" onclick="fillExample(true)">مثال</button>
+<button class="btn-copy" onclick="copyLast()">کپی نتیجه</button>
+<button class="btn-share" onclick="shareLast()">اشتراک</button>
+<button class="btn-clear" onclick="clearForm(true)">پاک کردن</button>
+</div>
+<div id="res_A" class="res" style="display:none"></div>
+</div>
+</div>
+</div>
+<div id="view-chart" style="display:none">
+<div class="card">
+<div class="chart-type-row"><button id="btnChartLine" class="active" onclick="setChartType('line')">نمودار خطی</button><button id="btnChartBar" onclick="setChartType('bar')">نمودار میله‌ای</button></div>
+<div class="chart-legend"><span><i class="dot" style="background:#006845"></i>مبلغ واریز</span><span><i class="dot" style="background:#C6A15B"></i>ارزش به‌روز شده</span></div>
+<div style="position:relative"><canvas id="chartCv" width="640" height="360" onmousemove="chartHover(event)" onmouseleave="hideTip()" ontouchstart="chartHover(event)" ontouchmove="chartHover(event)"></canvas><div id="chartTip"></div></div>
+<div id="chartMsg" style="font-size:13px;margin-top:8px"></div>
+<div class="chart-bar-note">در نمودار خطی دو خط هم‌زمان رسم می‌شود. در نمودار میله‌ای هر محاسبه فقط یک میله است: بخش سبز مبلغ واریز و بخش طلایی مقدار رشد تا ارزش به‌روز. اشاره یا لمس جزئیات را نشان می‌دهد.</div>
+</div>
+</div>
+<div id="view-total" style="display:none">
+<div class="total-sticky"><div id="totalOrig">جمع واریز: ۰</div><div id="totalSum">۰ تومان</div><div id="totalCountNav" style="font-size:12px;color:#777"></div></div>
+<div class="card no-print" style="margin-bottom:8px">
+<div class="hist-view-row"><button id="btnHistBlock" class="active" onclick="setHistView('block')">نمایش بلوکی</button><button id="btnHistTable" onclick="setHistView('table')">نمایش جدولی</button></div>
+<div class="hist-sort-row"><button id="btnSortCalc" class="active" onclick="setHistSort('calc')">ترتیب انجام محاسبات</button><button id="btnSortDep" onclick="setHistSort('dep')">زمان واریز</button></div>
+<div class="hist-sort-note">نمودار همواره بر اساس زمان واریز نشان داده می‌شود.</div>
+<div class="hist-actions-row"><button onclick="printHist()">چاپ گزارش مدل فعلی</button><button class="excel" onclick="downloadExcel()">دانلود اکسل</button><button onclick="clearHist()" style="background:#C8102E;border-color:#C8102E">حذف همه تاریخچه</button></div>
+</div>
+<div id="totalList"></div>
+<div id="totalTableWrap" style="display:none;overflow-x:auto;margin-top:8px">
+<table class="hist-table">
+<thead><tr><th>ردیف</th><th>مبلغ واریز(تومان)</th><th>زمان واریز</th><th>CPI روز واریز</th><th>زمان محاسبه</th><th>CPI مبنای محاسبه</th><th>ارزش به‌روز<br>(تومان)</th><th>رشد</th><th>حذف</th></tr></thead>
+<tbody id="totalTbody"></tbody>
+</table>
+<div style="font-size:12px;color:#777;margin-top:6px" class="no-print">برای دیدن همه ستون‌ها جدول را به چپ بکشید.</div>
+<div class="hist-actions-row no-print"><button onclick="printHist()">چاپ جدول</button><button class="excel" onclick="downloadExcel()">دانلود اکسل جدول</button><button onclick="clearHist()" style="background:#C8102E;border-color:#C8102E">حذف همه</button></div>
+</div>
+<div id="blockActions" class="hist-actions-row no-print" style="margin-top:8px"><button onclick="printHist()">چاپ گزارش بلوکی</button><button class="excel" onclick="downloadExcel()">دانلود اکسل</button><button onclick="clearHist()" style="background:#C8102E;border-color:#C8102E">حذف همه</button></div>
+</div>
+<div id="view-help" style="display:none">
+<div class="card"><h3>شاخص CPI چیست؟</h3><p style="font-size:13px;line-height:2">شاخص قیمت مصرف‌کننده میانگین قیمت سبدی از کالاها و خدمات مصرفی خانوار را نشان می‌دهد. رشد این شاخص یعنی تورم و کاهش قدرت خرید.</p></div>
+<div class="card"><h3>متغیرها و نحوه محاسبه <span class="beta-mini">Ver 10.01 PWA</span></h3><div class="formula">AM.VALUE(NOW) = AMOUNT(Y0) x CPI(NOW) / CPI(Y0)</div><div class="var-line">مبلغ واریز: مبلغ اولیه به تومان</div><div class="var-line">شاخص تورم زمان واریز: شاخص ماه یا سال واریز</div><div class="var-line">شاخص تورم زمان محاسبه: شاخص ماه یا سال محاسبه</div><div class="var-line">ارزش به‌روز شده: نتیجه نهایی به تومان</div></div>
+<div class="card"><h3>وضعیت شاخص و به‌روزرسانی خودکار</h3><div id="helpCpiStatus" style="font-size:13px;line-height:2">منبع شاخص: داخلی برنامه</div><div style="display:flex;gap:8px;margin-top:8px"><button onclick="fetchRemoteCPI(true)" style="flex:1;padding:9px;border-radius:10px;border:2px solid #0A3B2E;background:#0A3B2E;color:#fff;font-family:inherit;font-weight:800;cursor:pointer">بررسی به‌روزرسانی</button><button onclick="clearRemoteCache()" style="flex:1;padding:9px;border-radius:10px;border:2px solid #C6A15B;background:#fff;font-family:inherit;font-weight:800;cursor:pointer">بازگشت به جدول داخلی</button></div><p style="font-size:12px;line-height:2;color:#555">اولویت: جدول داخلی، بعد اینترنت (با دکمه بررسی به‌روزرسانی)، بعد دستی مدیر. بدون اینترنت همان جدول داخلی نمایش داده می‌شود.</p></div>
+<div class="card"><h3>به‌روزرسانی دستی شاخص (مدیر)</h3><p style="font-size:12px;line-height:2">عدد جدید مرکز آمار را اینجا وارد کنید. این مقدار بر همه‌چیز اولویت دارد.</p><div class="upd-row"><div><label>سال</label><select id="updYear"></select></div><div><label>ماه</label><select id="updMonth"></select></div></div><div><label>عدد شاخص جدید</label><input id="updVal" type="text" inputmode="decimal" autocomplete="off" oninput="formatInputEl(this)"></div><div style="display:flex;gap:8px;margin-top:8px"><button onclick="saveUpdVal()" style="flex:1;padding:10px;border-radius:10px;background:#006845;color:#fff;border:none;font-family:inherit;font-weight:800;cursor:pointer">ذخیره عدد دستی</button><button onclick="clearOverrides()" style="flex:1;padding:10px;border-radius:10px;background:#C8102E;color:#fff;border:none;font-family:inherit;font-weight:800;cursor:pointer">حذف همه دستی‌ها</button></div><div id="updList" class="upd-list">مورد دستی ثبت نشده است.</div></div>
+<div class="card"><h3>منابع</h3><p style="font-size:13px;line-height:2">مرکز آمار ایران — amar.org.ir<br>بانک مرکزی — cbi.ir<br>مبنا: میانگین سال ۱۳۹۵ برابر ۱۰۰</p></div>
+<div class="card"><h3>طراحی و اطلاعات</h3><p style="font-size:13px;line-height:2">طراحی و تنظیم: موسوی مطلق<br><a href="https://ble.ir/join/MGMzYmRhMz">ble.ir/join/MGMzYmDhMz | @bankiclub</a><br>نسخه Ver 10.01 PWA — نسخه بتا - آزمایشی</p></div>
+</div>
+</main>
+<nav class="bottom-nav">
+<button id="tabBtnCalc" class="active" onclick="switchTab('calc')" title="محاسبه">🧮</button>
+<button id="tabBtnChart" onclick="switchTab('chart')" title="نمودار">📊</button>
+<button id="tabBtnTotal" onclick="switchTab('total')" title="تاریخچه">📋 <span id="histCount">۰</span></button>
+<button id="tabBtnHelp" onclick="switchTab('help')" title="راهنما">❓</button>
+<button id="themeBtnBottom" onclick="toggleTheme()" title="تم">🌙</button>
+</nav>
+<div id="printArea"></div>
+<script>function hideSplash(){var s=document.getElementById('splash');if(s){s.style.display='none';}}setTimeout(hideSplash,1700);</script>
+<script>
+var CPI_REMOTE_URL="https://cdn.jsdelivr.net/gh/smm13511-alt/tavarom-cpi@main/cpi.json";
+var MONTHS=['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند','میانگین سال'];
+var CPI_AVG={'1375':4.52,'1376':5.298,'1377':6.258,'1378':7.516,'1379':8.463,'1380':9.427,'1381':10.915,'1382':12.624,'1383':14.544,'1384':16.048,'1385':17.955,'1386':21.265,'1387':26.66,'1388':29.527,'1389':33.188,'1390':40.321,'1391':52.635,'1392':70.916,'1393':81.948,'1394':91.714,'1395':100,'1396':109.65,'1397':143.842,'1398':203.15,'1399':298.858,'1400':437.042,'1401':640.225,'1402':974.75,'1403':1324,'1404':1963.5,'1405':null};
+var CPI_DB={'1375':[4.344,4.344,4.344,4.344,4.344,4.424,4.464,4.545,4.625,4.706,4.746,4.826],'1376':[4.987,5.108,5.108,5.108,5.188,5.229,5.229,5.269,5.349,5.47,5.631,5.711],'1377':[5.953,5.953,5.953,6.033,6.033,6.113,6.194,6.274,6.435,6.516,6.636,6.797],'1378':[7.199,7.24,7.28,7.24,7.28,7.36,7.441,7.481,7.682,7.803,7.923,8.044],'1379':[8.124,8.124,8.245,8.165,8.285,8.326,8.406,8.486,8.647,8.688,8.768,8.929],'1380':[9.09,9.09,9.13,9.17,9.251,9.291,9.331,9.371,9.572,9.693,9.814,9.975],'1381':[10.176,10.417,10.578,10.578,10.618,10.779,10.779,10.94,11.141,11.382,11.583,11.744],'1382':[11.986,12.106,12.267,12.348,12.388,12.388,12.468,12.629,12.911,13.072,13.152,13.353],'1383':[13.72,13.88,14.08,14.24,14.32,14.36,14.52,14.64,14.8,15,15.16,15.44],'1384':[15.97,15.85,15.81,15.69,15.69,15.73,15.85,16.01,16.17,16.29,16.45,16.69],'1385':[16.81,16.97,17.25,17.25,17.33,17.66,17.9,18.06,18.5,18.86,19.1,19.31],'1386':[19.63,19.79,20.03,20.19,20.31,20.83,21.16,21.52,22.12,22.48,22.97,23.65],'1387':[24.37,24.78,25.34,25.46,25.94,26.95,27.39,27.59,27.95,27.83,27.71,27.83],'1388':[28.15,28.52,29,29.04,29.32,29.44,29.48,29.64,30,30,30.21,30.77],'1389':[31.05,31.17,31.41,31.73,32.14,32.38,32.98,33.34,33.87,34.75,35.63,36.84],'1390':[37.5,38.1,38.6,38.7,39.1,39.8,40.2,40.8,41.4,42,43.1,44.5],'1391':[45.5,46.6,47.1,48.1,48.9,50.3,52.7,55.2,56.4,57.5,60.5,62.9],'1392':[64.7,66,68.3,69.2,70,71.2,72.1,72.8,73.1,74,74.3,75.2],'1393':[76,76.9,78.2,79.3,80.4,81.4,82.6,83.8,85.4,85.6,86.3,87.4],'1394':[88.5,89.4,90.9,90.6,90.5,91,91.5,92.2,93.4,93.8,94,94.7],'1395':[95,96.3,97.7,98.3,99.2,99.6,100,100.2,101.7,102.5,103.7,105.9],'1396':[107.1,107.1,107.8,107.5,107.7,108,108.4,109.8,111.9,112.4,113.4,114.7],'1397':[115.6,117.5,122.6,126.8,133.8,141.9,148.4,153.6,159.3,162.1,167.7,176.8],'1398':[182.7,188.2,192.6,196.9,198.5,200.1,201.4,204.1,212.5,214.7,219.6,226.5],'1399':[229.9,240.2,249.8,261.8,270.8,281.3,302.8,326.1,338.9,347.5,363,374.2],'1400':[378.3,382,399.3,410,421.7,435.6,448.9,459.7,468.2,474.2,482,484.6],'1401':[495.1,520.4,575.4,600.4,614.8,631,649.5,663.5,679.8,713.4,745.1,794.3],'1402':[834.9,858.3,885.8,908.8,940.6,971.6,995.9,1014.8,1048.3,1066.1,1076.8,1097.3],'1403':[1125.8,1159.6,1206,1242.2,1277,1306.4,1339.1,1379.3,1402.7,1433.6,1485.2,1531.2],'1404':[1589.5,1625.7,1689.2,1742.7,1802.6,1877.9,1967.6,2033.7,2100.9,2220.7,2408.4,2481.3],'1405':[2654.9,2880.4,3092.3,3205.1,3323.9,3452.1,null,null,null,null,null,null]};
+var CPI_REMOTE=null;
+var CPI_MANUAL=null;
+var currentTab='calc';
+var chartType='line';
+var histView='block';
+var histSort='calc';
+var lastRec=null;
+var lastText='';
+var AGREE_KEY='inflation_agree_v1';
+function checkAgree(){try{var v=null;try{v=localStorage.getItem(AGREE_KEY);}catch(e){}if(v&&(''+v).indexOf('accepted')===0){return;}var o=document.getElementById('agreeOverlay');if(o){o.style.display='flex';}}catch(e){}}
+function acceptAgree(){try{try{localStorage.setItem(AGREE_KEY,'accepted|'+new Date().toISOString());}catch(e){}var o=document.getElementById('agreeOverlay');if(o){o.style.display='none';}}catch(e){}}
+function declineAgree(){try{alert('بدون پذیرش توافق‌نامه امکان استفاده از برنامه وجود ندارد.');}catch(e){}try{if(navigator.app&&navigator.app.exitApp){navigator.app.exitApp();}else if(window.close){window.close();}}catch(e){}}
+function nowMs(){try{if(window.performance&&performance.now){return performance.now();}}catch(e){}return new Date().getTime();}
+function toEn(s){s=''+s;s=s.replace(/[۰-۹]/g,function(c){return String('۰۱۲۳۴۵۶۷۸۹'.indexOf(c));});s=s.replace(/[٠-٩]/g,function(c){return String('٠١٢٣٤٥٦٧٨٩'.indexOf(c));});s=s.replace(/[,٬،\s]/g,'');s=s.replace(/[^0-9.\-]/g,'');return s;}
+function maskRemoteUrl(u){try{return (''+u).replace(/(\/gh\/)[^\/]+(\/)/,'$1*****$2');}catch(e){return u;}}
+function faNum(n){n=''+n;var fa='۰۱۲۳۴۵۶۷۸۹';var o='';for(var i=0;i<n.length;i++){var c=n.charAt(i);if(c>='0'&&c<='9'){o+=fa.charAt(parseInt(c,10));}else if(c===','){o+='٬';}else if(c==='.'){o+='٫';}else{o+=c;}}return o;}
+function enComma(n){var v=Number(n);if(isNaN(v)){return ''+n;}return v.toLocaleString('en-US');}
+function faSep(n){var v=Math.round(Number(n));if(isNaN(v)){return '';}var neg='';if(v<0){neg='-';v=-v;}var s=''+v;var o='';while(s.length>3){o=','+s.slice(-3)+o;s=s.slice(0,-3);}o=s+o;if(neg){o=neg+o;}return faNum(o);}
+function faSepDec(n){var v=Number(n);if(isNaN(v)){return ''+n;}return faNum(enComma(v));}
+function nextFrame(fn){if(window.requestAnimationFrame){return window.requestAnimationFrame(fn);}return setTimeout(fn,16);}
+function cancelFrame(h){if(window.cancelAnimationFrame){try{window.cancelAnimationFrame(h);}catch(e){}}else{try{clearTimeout(h);}catch(e){}}}
+function loadRemoteCache(){CPI_REMOTE=null;try{var s=localStorage.getItem('inflation_cpi_remote_v1');if(!s){return;}var o=JSON.parse(s);if(o&&o.monthly){CPI_REMOTE=o;}}catch(e){CPI_REMOTE=null;}}
+function loadManual(){CPI_MANUAL={monthly:{},avg:{}};try{var s=localStorage.getItem('inflation_cpi_override_v1');if(!s){return;}var o=JSON.parse(s);if(!o){return;}if(o.monthly){CPI_MANUAL.monthly=o.monthly;}if(o.avg){CPI_MANUAL.avg=o.avg;}}catch(e){CPI_MANUAL={monthly:{},avg:{}};}}
+function saveManual(){try{localStorage.setItem('inflation_cpi_override_v1',JSON.stringify(CPI_MANUAL));}catch(e){}}
+function getCPI(y,m){y=''+y;m=parseInt(m,10);try{if(m===12){var av0=CPI_AVG[y];if(av0!=null&&av0!==''){var an0=Number(av0);if(!isNaN(an0)){return an0;}}}else{if(CPI_DB[y]&&CPI_DB[y][m]!=null&&CPI_DB[y][m]!==''){var iv0=Number(CPI_DB[y][m]);if(!isNaN(iv0)){return iv0;}}}}catch(e){}try{if(CPI_REMOTE){if(m===12){if(CPI_REMOTE.avg&&CPI_REMOTE.avg[y]!=null){var ra=Number(CPI_REMOTE.avg[y]);if(!isNaN(ra)){return ra;}}}else{if(CPI_REMOTE.monthly&&CPI_REMOTE.monthly[y]&&CPI_REMOTE.monthly[y][m]!=null){var rm=Number(CPI_REMOTE.monthly[y][m]);if(!isNaN(rm)){return rm;}}}}}catch(e2){}try{if(CPI_MANUAL){if(m===12){if(CPI_MANUAL.avg&&CPI_MANUAL.avg[y]!=null&&CPI_MANUAL.avg[y]!==''){var av=Number(CPI_MANUAL.avg[y]);if(!isNaN(av)){return av;}}}else{var kk=y+'-'+m;if(CPI_MANUAL.monthly&&CPI_MANUAL.monthly[kk]!=null&&CPI_MANUAL.monthly[kk]!==''){var mv=Number(CPI_MANUAL.monthly[kk]);if(!isNaN(mv)){return mv;}}}}}catch(e3){}return null;}
+function updateCPIStatus(){try{var src='داخلی برنامه';var ver='';if(CPI_REMOTE&&CPI_REMOTE.version){ver=''+CPI_REMOTE.version;}var cnt=0;try{if(CPI_MANUAL){if(CPI_MANUAL.monthly){for(var k in CPI_MANUAL.monthly){if(CPI_MANUAL.monthly.hasOwnProperty(k)){cnt++;}}}if(CPI_MANUAL.avg){for(var k2 in CPI_MANUAL.avg){if(CPI_MANUAL.avg.hasOwnProperty(k2)){cnt++;}}}}}catch(e){}if(ver!==''&&cnt>0){src='داخلی برنامه + اینترنتی ('+ver+') + دستی مدیر ('+faNum(cnt)+' مورد)';}else if(ver!==''){src='داخلی برنامه + اینترنتی (گیت‌هاب) نسخه '+ver;}else if(cnt>0){src='داخلی برنامه + دستی مدیر ('+faNum(cnt)+' مورد)';}var a=document.getElementById('cpiStatus');if(a){a.innerHTML='منبع شاخص: '+src;}var a1=document.getElementById('cpiSrcLine');if(a1){a1.innerHTML='شاخص‌ها از منبع '+src+' استخراج شده‌اند';}var a2=document.getElementById('cpiSrcLine_A');if(a2){a2.innerHTML='شاخص‌ها از منبع '+src+' استخراج شده‌اند';}var b=document.getElementById('helpCpiStatus');if(b){var t='منبع فعلی: '+src;if(CPI_REMOTE&&CPI_REMOTE.updatedFa){t=t+'<br>آخرین به‌روزرسانی: '+CPI_REMOTE.updatedFa;}t=t+'<br>آدرس فایل: '+maskRemoteUrl(CPI_REMOTE_URL);b.innerHTML=t;}renderOverrideList();}catch(e){}}
+function fetchRemoteCPI(manual){try{if(!CPI_REMOTE_URL||CPI_REMOTE_URL.indexOf('USERNAME')>=0){if(manual){alert('آدرس میزبانی هنوز تنظیم نشده است. فعلا از جدول داخلی استفاده می‌شود.');}updateCPIStatus();return;}}catch(e){return;}var xhr=null;try{xhr=new XMLHttpRequest();}catch(e){if(manual){alert('مرورگر پشتیبانی نمی‌کند');}return;}var url=CPI_REMOTE_URL;try{if(url.indexOf('?')>=0){url=url+'&t='+Math.floor(nowMs());}else{url=url+'?t='+Math.floor(nowMs());}}catch(e2){}var done=false;var timer=setTimeout(function(){if(!done){try{xhr.abort();}catch(e){}if(manual){alert('زمان اتصال تمام شد. از جدول داخلی استفاده می‌شود.');}updateCPIStatus();}},6000);try{xhr.open('GET',url,true);}catch(e3){done=true;try{clearTimeout(timer);}catch(e){}if(manual){alert('ارتباط برقرار نشد');}return;}try{xhr.onreadystatechange=function(){if(xhr.readyState!==4){return;}done=true;try{clearTimeout(timer);}catch(e){}if(xhr.status===200){try{var data=null;try{data=JSON.parse(xhr.responseText);}catch(je){data=null;}if(!data||!data.monthly){if(manual){alert('فایل شاخص معتبر نیست');}updateCPIStatus();return;}var norm={version:''+(data.version||''),updatedFa:''+(data.updatedFa||data.version||''),avg:{},monthly:{}};for(var k in data.avg){if(data.avg.hasOwnProperty(k)){var vv=data.avg[k];if(vv==null||vv===''){norm.avg[k]=null;}else{var nn=Number(vv);norm.avg[k]=isNaN(nn)?null:nn;}}}for(var yy in data.monthly){if(data.monthly.hasOwnProperty(yy)){var arr=data.monthly[yy];var out=[];for(var i=0;i<12;i++){var v2=null;if(arr&&arr.length>i){v2=arr[i];}if(v2==null||v2===''){out.push(null);}else{var n2=Number(v2);if(isNaN(n2)){out.push(null);}else{out.push(n2);}}}norm.monthly[yy]=out;}}CPI_REMOTE=norm;try{localStorage.setItem('inflation_cpi_remote_v1',JSON.stringify(norm));}catch(e){}refreshMonthAvailability();autoFillCPI();autoFillCPI_A();updateCPIStatus();if(manual){alert('شاخص‌ها به‌روز شد');}}catch(e4){if(manual){alert('فایل شاخص معتبر نیست');}updateCPIStatus();}}else{if(manual){alert('ارتباط برقرار نشد. از جدول داخلی استفاده می‌شود.');}updateCPIStatus();}};xhr.send(null);}catch(e5){done=true;try{clearTimeout(timer);}catch(e){}if(manual){alert('امکان دریافت وجود ندارد');}}}
+function clearRemoteCache(){try{localStorage.removeItem('inflation_cpi_remote_v1');}catch(e){}CPI_REMOTE=null;try{refreshMonthAvailability();autoFillCPI();autoFillCPI_A();}catch(e2){}updateCPIStatus();alert('به جدول داخلی برگشتید');}
+function saveUpdVal(){try{var y=document.getElementById('updYear').value;var m=parseInt(document.getElementById('updMonth').value,10);var v=parseFloat(toEn(document.getElementById('updVal').value));if(!(v>0)){alert('عدد شاخص باید بزرگ‌تر از صفر باشد');return;}if(!CPI_MANUAL){CPI_MANUAL={monthly:{},avg:{}};}if(m===12){CPI_MANUAL.avg[''+y]=v;}else{CPI_MANUAL.monthly[''+y+'-'+m]=v;}saveManual();document.getElementById('updVal').value='';refreshMonthAvailability();autoFillCPI();autoFillCPI_A();updateCPIStatus();alert('ذخیره شد و اعمال گردید');}catch(e){alert('خطا در ذخیره');}}
+function clearOverrides(){try{if(!confirm('همه مقادیر دستی حذف شود؟')){return;}CPI_MANUAL={monthly:{},avg:{}};saveManual();refreshMonthAvailability();autoFillCPI();autoFillCPI_A();updateCPIStatus();}catch(e){}}
+function delUpdMBtn(btn){try{var k=btn.getAttribute('data-k');if(CPI_MANUAL&&CPI_MANUAL.monthly){delete CPI_MANUAL.monthly[k];}saveManual();refreshMonthAvailability();autoFillCPI();autoFillCPI_A();updateCPIStatus();}catch(e){}}
+function delUpdAvgBtn(btn){try{var k=btn.getAttribute('data-k');if(CPI_MANUAL&&CPI_MANUAL.avg){delete CPI_MANUAL.avg[k];}saveManual();refreshMonthAvailability();autoFillCPI();autoFillCPI_A();updateCPIStatus();}catch(e){}}
+function renderOverrideList(){try{var box=document.getElementById('updList');if(!box){return;}var html='';var cnt=0;if(CPI_MANUAL&&CPI_MANUAL.monthly){for(var k in CPI_MANUAL.monthly){if(CPI_MANUAL.monthly.hasOwnProperty(k)){cnt++;var pr=k.split('-');var yy=pr[0];var mm=parseInt(pr[1],10);var lab=MONTHS[mm]+' '+faNum(yy)+' : '+faSepDec(CPI_MANUAL.monthly[k]);html=html+'<div class="upd-item">'+lab+' <button data-k="'+k+'" onclick="delUpdMBtn(this)" style="background:#C8102E;color:#fff;border:none;border-radius:6px;padding:2px 8px;font-family:inherit">حذف</button></div>';}}}if(CPI_MANUAL&&CPI_MANUAL.avg){for(var k2 in CPI_MANUAL.avg){if(CPI_MANUAL.avg.hasOwnProperty(k2)){cnt++;var lab2='میانگین سال '+faNum(k2)+' : '+faSepDec(CPI_MANUAL.avg[k2]);html=html+'<div class="upd-item">'+lab2+' <button data-k="'+k2+'" onclick="delUpdAvgBtn(this)" style="background:#C8102E;color:#fff;border:none;border-radius:6px;padding:2px 8px;font-family:inherit">حذف</button></div>';}}}if(cnt===0){box.innerHTML='مورد دستی ثبت نشده است.';}else{box.innerHTML=html;}}catch(e){}}
+function fillYears(id,def,min,max){var el=document.getElementById(id);if(!el){return;}el.innerHTML='';for(var y=max;y>=min;y--){var o=document.createElement('option');o.value=''+y;o.text=faNum(y);if(y===def){o.selected=true;}el.appendChild(o);}}
+function fillMonths(id,def,allowAvg){var el=document.getElementById(id);if(!el){return;}el.innerHTML='';var lim=12;if(allowAvg!==false){lim=13;}for(var i=0;i<lim;i++){var o=document.createElement('option');o.value=''+i;o.text=MONTHS[i];if(i===def){o.selected=true;}el.appendChild(o);}}
+function refreshPair(yId,mId){var yEl=document.getElementById(yId);var mEl=document.getElementById(mId);if(!yEl||!mEl){return;}var y=parseInt(yEl.value,10);var cur=parseInt(mEl.value,10);if(isNaN(cur)){cur=0;}for(var i=0;i<mEl.options.length;i++){var v=getCPI(y,i);if(v==null){mEl.options[i].disabled=true;mEl.options[i].text=MONTHS[i]+' (به‌زودی)';}else{mEl.options[i].disabled=false;mEl.options[i].text=MONTHS[i];}}var curV=getCPI(y,cur);if(curV==null){var last=-1;for(var k=11;k>=0;k--){if(getCPI(y,k)!=null){last=k;break;}}if(last>=0){mEl.value=''+last;}}}
+function refreshMonthAvailability(){refreshPair('selYY','selMY');refreshPair('selYN','selMN');autoFillCPI();}
+function autoFillCPI(){try{var y=parseInt(document.getElementById('selYY').value,10);var m=parseInt(document.getElementById('selMY').value,10);var yn=parseInt(document.getElementById('selYN').value,10);var mn=parseInt(document.getElementById('selMN').value,10);var a=getCPI(y,m);var b=getCPI(yn,mn);if(a!=null){document.getElementById('xOld').value=''+a;}else{document.getElementById('xOld').value='';}if(b!=null){document.getElementById('xNew').value=''+b;}else{document.getElementById('xNew').value='';}}catch(e){}}
+function autoFillCPI_A(){try{var y=parseInt(document.getElementById('selYY_A').value,10);var yn=parseInt(document.getElementById('selYN_A').value,10);var a=getCPI(y,12);var b=getCPI(yn,12);if(a!=null){document.getElementById('xOld_A').value=''+a;}else{document.getElementById('xOld_A').value='';}if(b!=null){document.getElementById('xNew_A').value=''+b;}else{document.getElementById('xNew_A').value='';}}catch(e){}}
+function formatInputEl(el){var raw=toEn(el.value);if(raw===''||raw==='-'){if(el.id==='xAmt'||el.id==='xAmt_A'){updateAmtBox(el.id);}return;}var parts=raw.split('.');var intP=parts[0];var neg='';if(intP.charAt(0)==='-'){neg='-';intP=intP.slice(1);}intP=intP.replace(/^0+(?=\d)/,'');if(intP===''){intP='0';}var out='';while(intP.length>3){out=','+intP.slice(-3)+out;intP=intP.slice(0,-3);}out=intP+out;if(parts.length>1){out=out+'.'+parts[1];}el.value=neg+out;if(el.id==='xAmt'||el.id==='xAmt_A'){updateAmtBox(el.id);}}
+function updateAmtBox(id){var el=document.getElementById(id);if(!el){return;}var hintId='amtHint';if(id==='xAmt_A'){hintId='amtHint_A';}var hint=document.getElementById(hintId);var v=toEn(el.value);var num=parseFloat(v);if(isNaN(num)){el.className='amt-empty';if(hint){hint.className='amt-hint need';hint.innerHTML='مبلغ را وارد کنید';}}else{el.className='amt-filled';if(hint){hint.className='amt-hint ok';hint.innerHTML='مبلغ وارد شد';}}}
+function showRes(isA,html,isErr){var id='res';if(isA){id='res_A';}var el=document.getElementById(id);el.style.display='block';if(isErr){el.className='res err';}else{el.className='res';}el.innerHTML=html;}
+function loadHist(){try{var s=localStorage.getItem('inflation_history_v1');if(!s){return [];}var a=JSON.parse(s);if(!a||!a.length){return [];}return a;}catch(e){return [];}}
+function saveHist(a){try{localStorage.setItem('inflation_history_v1',JSON.stringify(a));}catch(e){}}
+function saveDraft(){try{var d={a:document.getElementById('xAmt').value,aa:document.getElementById('xAmt_A').value,yy:document.getElementById('selYY').value,my:document.getElementById('selMY').value,yn:document.getElementById('selYN').value,mn:document.getElementById('selMN').value,yya:document.getElementById('selYY_A').value,yna:document.getElementById('selYN_A').value};localStorage.setItem('inflation_draft_v1',JSON.stringify(d));}catch(e){}}
+function loadDraft(){try{var s=localStorage.getItem('inflation_draft_v1');if(!s){return;}var d=JSON.parse(s);if(d.a){document.getElementById('xAmt').value=d.a;}if(d.aa){document.getElementById('xAmt_A').value=d.aa;}if(d.yy){document.getElementById('selYY').value=d.yy;}if(d.my){document.getElementById('selMY').value=d.my;}if(d.yn){document.getElementById('selYN').value=d.yn;}if(d.mn){document.getElementById('selMN').value=d.mn;}if(d.yya){document.getElementById('selYY_A').value=d.yya;}if(d.yna){document.getElementById('selYN_A').value=d.yna;}}catch(e){}}
+function loadHistView(){try{var v=localStorage.getItem('inflation_histview_v1');if(v==='table'||v==='block'){histView=v;}}catch(e){}}
+function setHistView(t){histView=t;try{localStorage.setItem('inflation_histview_v1',t);}catch(e){}var bb=document.getElementById('btnHistBlock');var bt=document.getElementById('btnHistTable');if(bb){if(t==='block'){bb.className='active';}else{bb.className='';}}if(bt){if(t==='table'){bt.className='active';}else{bt.className='';}}renderTotal();}
+function loadHistSort(){try{var v=localStorage.getItem('inflation_histsort_v1');if(v==='dep'||v==='calc'){histSort=v;}}catch(e){}}
+function setHistSort(t){if(t!=='dep'&&t!=='calc'){return;}histSort=t;try{localStorage.setItem('inflation_histsort_v1',t);}catch(e){}try{var bc=document.getElementById('btnSortCalc');var bd=document.getElementById('btnSortDep');if(bc){if(t==='calc'){bc.className='active';}else{bc.className='';}}if(bd){if(t==='dep'){bd.className='active';}else{bd.className='';}}}catch(e){}renderTotal();}
+function depKeyOf(r){try{if(r&&r.depY!=null&&r.depM!=null){var yy=parseInt(r.depY,10);var mm=parseInt(r.depM,10);if(!isNaN(yy)&&!isNaN(mm)){return yy*100+mm;}}var lab=''+(r.depLabel||'');if(lab.indexOf('سال')>=0){var ns1=toEn(lab).replace(/[^0-9]/g,'');var y1=parseInt(ns1,10);if(!isNaN(y1)){return y1*100+12;}}else{var mi=-1;for(var i=0;i<12;i++){if(lab.indexOf(MONTHS[i])>=0){mi=i;break;}}var ns2=toEn(lab).replace(/[^0-9]/g,'');var y2=parseInt(ns2.slice(-4),10);if(isNaN(y2)){y2=parseInt(ns2,10);}if(!isNaN(y2)&&mi>=0){return y2*100+mi;}}}catch(e){}return null;}
+function tsOf(r){try{if(r&&r.ts!=null){var t=Number(r.ts);if(!isNaN(t)&&t>0){return t;}}}catch(e){}return null;}
+function getDepSortedHist(h){var arr=[];for(var i=0;i<h.length;i++){arr.push({r:h[i],i:i,dk:depKeyOf(h[i]),ts:tsOf(h[i])});}arr.sort(function(a,b){var da=a.dk;var db=b.dk;if(da==null&&db==null){var ta0=a.ts;var tb0=b.ts;if(ta0!=null&&tb0!=null){if(ta0<tb0){return -1;}if(ta0>tb0){return 1;}}return a.i-b.i;}if(da==null){return 1;}if(db==null){return -1;}if(da!==db){return da-db;}var ta=a.ts;var tb=b.ts;if(ta!=null&&tb!=null){if(ta!==tb){return ta-tb;}}return a.i-b.i;});var out=[];for(var k=0;k<arr.length;k++){out.push(arr[k].r);}return out;}
+function getSortedHist(h){if(histSort==='dep'){return getDepSortedHist(h);}var arr=[];for(var i=0;i<h.length;i++){arr.push({r:h[i],i:i,ts:tsOf(h[i])});}arr.sort(function(a,b){var ta=a.ts;var tb=b.ts;if(ta!=null&&tb!=null){if(ta!==tb){return tb-ta;}}else{if(ta!=null){return -1;}if(tb!=null){return 1;}}return a.i-b.i;});var out=[];for(var k=0;k<arr.length;k++){out.push(arr[k].r);}return out;}
+function buildPrettyText(r){var L=[];L.push('تورم‌نما | مبنای ۱۳۹۵');L.push('نسخه Ver 10.01 PWA');L.push('------------------------------');L.push('مبلغ واریز:');L.push(enComma(r.x)+' تومان');L.push('زمان واریز:');L.push(r.depLabel);L.push('شاخص تورم زمان واریز:');L.push(enComma(r.y));L.push('زمان محاسبه:');L.push(r.calcLabel);L.push('شاخص تورم زمان محاسبه:');L.push(enComma(r.n));L.push('ارزش به‌روز شده:');L.push(enComma(Math.round(r.xNew))+' تومان');L.push('درصد رشد:');L.push(enComma(Math.round(r.growth*10)/10)+' درصد');L.push('------------------------------');L.push('کانال @bankiclub در بله');return L.join('\n');}
+function legacyCopy(t){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');alert('کپی شد');}catch(e){alert('کپی نشد');}document.body.removeChild(ta);}
+function copyLast(){if(!lastText){alert('اول محاسبه کنید');return;}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(lastText).then(function(){alert('کپی شد');},function(){legacyCopy(lastText);});}else{legacyCopy(lastText);}}
+function shareLast(){if(!lastText){alert('اول محاسبه کنید');return;}if(navigator.share){try{navigator.share({text:lastText});}catch(e){if(navigator.clipboard){navigator.clipboard.writeText(lastText);}else{legacyCopy(lastText);}}}else if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(lastText).then(function(){alert('کپی شد، در بله ارسال کنید');});}else{legacyCopy(lastText);}}
+function doCalc(isA,isExample){var xEl=document.getElementById('xAmt_A');if(!isA){xEl=document.getElementById('xAmt');}var yEl=document.getElementById('xOld_A');if(!isA){yEl=document.getElementById('xOld');}var nEl=document.getElementById('xNew_A');if(!isA){nEl=document.getElementById('xNew');}if(isA){updateAmtBox('xAmt_A');}else{updateAmtBox('xAmt');}var x=parseFloat(toEn(xEl.value));if(isNaN(x)){showRes(isA,'مبلغ واریز را وارد کنید',true);return;}var depLabel='';var calcLabel='';var ca=null;var cb=null;var depY=0;var depM=0;var calcY=0;var calcM=0;if(!isA){var y0=parseInt(document.getElementById('selYY').value,10);var m0=parseInt(document.getElementById('selMY').value,10);var y1=parseInt(document.getElementById('selYN').value,10);var m1=parseInt(document.getElementById('selMN').value,10);ca=getCPI(y0,m0);cb=getCPI(y1,m1);if(ca==null){showRes(false,'شاخص تورم زمان واریز هنوز منتشر نشده است؛ امکان محاسبه وجود ندارد. لطفا ماه دیگری را انتخاب کنید.',true);return;}if(cb==null){showRes(false,'شاخص تورم زمان محاسبه هنوز منتشر نشده است؛ امکان محاسبه وجود ندارد. لطفا ماه دیگری را انتخاب کنید.',true);return;}depLabel=MONTHS[m0]+' '+faNum(y0);calcLabel=MONTHS[m1]+' '+faNum(y1);depY=y0;depM=m0;calcY=y1;calcM=m1;}else{var ya=parseInt(document.getElementById('selYY_A').value,10);var yb=parseInt(document.getElementById('selYN_A').value,10);ca=getCPI(ya,12);cb=getCPI(yb,12);if(ca==null){showRes(true,'شاخص تورم زمان واریز هنوز منتشر نشده است؛ امکان محاسبه وجود ندارد. لطفا سال دیگری را انتخاب کنید.',true);return;}if(cb==null){showRes(true,'شاخص تورم زمان محاسبه هنوز منتشر نشده است؛ امکان محاسبه وجود ندارد. لطفا سال دیگری را انتخاب کنید.',true);return;}depLabel='سال '+faNum(ya);calcLabel='سال '+faNum(yb);depY=ya;depM=12;calcY=yb;calcM=12;}var y=parseFloat(toEn(yEl.value));var n=parseFloat(toEn(nEl.value));if(!(y>0)){showRes(isA,'شاخص تورم زمان واریز باید بزرگ‌تر از صفر باشد',true);return;}if(!(n>0)){showRes(isA,'شاخص تورم زمان محاسبه باید بزرگ‌تر از صفر باشد',true);return;}var xNew=x*n/y;var g=(n-y)/y*100;var html='<div>مبلغ واریز: '+faSep(Math.round(x))+' تومان</div><div>زمان واریز: '+depLabel+'</div><div>شاخص تورم زمان واریز: '+faSepDec(y)+'</div><div>زمان محاسبه: '+calcLabel+'</div><div>شاخص تورم زمان محاسبه: '+faSepDec(n)+'</div><div>ارزش به‌روز شده: '+faSep(Math.round(xNew))+' تومان</div><div>رشد '+faNum(Math.round(g*10)/10)+' درصد</div>';showRes(isA,html,false);var tsVal=0;try{tsVal=new Date().getTime();}catch(e){tsVal=0;}var rec={id:Math.floor(nowMs())+Math.floor(Math.random()*1000),mode:'month',depLabel:depLabel,calcLabel:calcLabel,x:x,y:y,n:n,xNew:xNew,growth:Math.round(g*10)/10,depY:depY,depM:depM,calcY:calcY,calcM:calcM,ts:tsVal};if(isA){rec.mode='year';}lastRec=rec;lastText=buildPrettyText(rec);saveDraft();if(isExample){return;}var h=loadHist();h.unshift(rec);saveHist(h);renderTotal();}
+function fillExample(isA){if(!isA){document.getElementById('xAmt').value='10,000,000';document.getElementById('xOld').value='100';document.getElementById('xNew').value='250';updateAmtBox('xAmt');doCalc(false,true);}else{document.getElementById('xAmt_A').value='10,000,000';document.getElementById('xOld_A').value='100';document.getElementById('xNew_A').value='250';updateAmtBox('xAmt_A');doCalc(true,true);}}
+function clearForm(isA){if(!isA){document.getElementById('xAmt').value='';document.getElementById('res').style.display='none';updateAmtBox('xAmt');}else{document.getElementById('xAmt_A').value='';document.getElementById('res_A').style.display='none';updateAmtBox('xAmt_A');}saveDraft();}
+function itemHTML(r,idx){var s='<div class="hist-item"><div class="hist-grid"><div><div style="font-size:12px;color:#777">'+r.depLabel+' به '+r.calcLabel+'</div><div style="font-size:13px">واریز: '+faSep(r.x)+' تومان</div><div style="font-size:12px">شاخص تورم زمان واریز: '+faSepDec(r.y)+'</div><div style="color:#006845;font-weight:800">ارزش به‌روز: '+faSep(Math.round(r.xNew))+' تومان</div><div style="font-size:12px">شاخص تورم زمان محاسبه: '+faSepDec(r.n)+'</div><div style="font-size:12px">رشد '+faNum(r.growth)+' درصد</div></div><div style="text-align:left"><button onclick="delItemAt('+idx+')" style="background:#C8102E;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-family:inherit">حذف</button><div style="font-size:11px;margin-top:6px;color:#999">#'+faNum(idx+1)+'</div></div></div></div>';return s;}
+function rowHTML(r,idx){var cls='';if(idx%2===1){cls=' class="even"';}var s='<tr'+cls+'><td>'+faNum(idx+1)+'</td><td>'+faSep(r.x)+'</td><td style="font-size:11px">'+r.depLabel+'</td><td>'+faSepDec(r.y)+'</td><td style="font-size:11px">'+r.calcLabel+'</td><td>'+faSepDec(r.n)+'</td><td style="color:#006845;font-weight:800">'+faSep(Math.round(r.xNew))+'</td><td>'+faNum(r.growth)+'</td><td><button class="tbl-del" onclick="delItemAt('+idx+')">حذف</button></td></tr>';return s;}
+function renderTotal(){try{var h=loadHist();var hs=getSortedHist(h);document.getElementById('histCount').innerHTML=faNum(h.length);document.getElementById('totalCountNav').innerHTML='تعداد: '+faNum(h.length)+' محاسبه';var box=document.getElementById('totalList');var wrap=document.getElementById('totalTableWrap');var tbody=document.getElementById('totalTbody');var bActs=document.getElementById('blockActions');if(!h.length){document.getElementById('totalOrig').innerHTML='جمع واریز: ۰';document.getElementById('totalSum').innerHTML='۰ تومان';box.innerHTML='<div class="card">هنوز محاسبه‌ای ثبت نشده است. مثال ذخیره نمی‌شود.</div>';tbody.innerHTML='';if(histView==='table'){box.style.display='none';wrap.style.display='block';if(bActs){bActs.style.display='none';}}else{box.style.display='block';wrap.style.display='none';if(bActs){bActs.style.display='flex';}}return;}var s1=0;var s2=0;for(var i=0;i<h.length;i++){s1+=h[i].x;s2+=h[i].xNew;}document.getElementById('totalOrig').innerHTML='جمع واریز: '+faSep(Math.round(s1))+' تومان';document.getElementById('totalSum').innerHTML=faSep(Math.round(s2))+' تومان';if(histView==='table'){box.style.display='none';wrap.style.display='block';if(bActs){bActs.style.display='none';}var out='';for(var j=0;j<hs.length;j++){out+=rowHTML(hs[j],j);}tbody.innerHTML=out;}else{wrap.style.display='none';box.style.display='block';if(bActs){bActs.style.display='flex';}var out2='';for(var k=0;k<hs.length;k++){out2+=itemHTML(hs[k],k);}box.innerHTML=out2;}}catch(e){}}
+function delItemAt(idx){try{var h=loadHist();idx=parseInt(idx,10);if(isNaN(idx)){return;}var hs=getSortedHist(h);if(idx<0||idx>=hs.length){return;}var target=hs[idx];var pos=-1;for(var i=0;i<h.length;i++){if(h[i]===target){pos=i;break;}}if(pos<0){for(var j=0;j<h.length;j++){if(String(h[j].id)===String(target.id)){pos=j;break;}}}if(pos<0){return;}h.splice(pos,1);saveHist(h);renderTotal();}catch(e){}}
+function delItem(id){try{var h=loadHist();var n=[];for(var i=0;i<h.length;i++){if(String(h[i].id)!==String(id)){n.push(h[i]);}}if(n.length===h.length){return;}saveHist(n);renderTotal();}catch(e){}}
+function clearHist(){try{var h=loadHist();if(!h.length){alert('تاریخچه خالی است');return;}if(!confirm('همه تاریخچه حذف شود؟')){return;}try{localStorage.removeItem('inflation_history_v1');}catch(e){}saveHist([]);renderTotal();}catch(e){}}
+function printHist(){try{var _ps=document.getElementById('printPageStyle');if(!_ps){_ps=document.createElement('style');_ps.id='printPageStyle';document.getElementsByTagName('head')[0].appendChild(_ps);}if(histView==='table'){_ps.innerHTML='@page{size:landscape;margin:10mm}';}else{_ps.innerHTML='@page{size:portrait;margin:12mm}';}}catch(e){}var h0=loadHist();if(!h0.length){alert('هنوز محاسبه‌ای ثبت نشده است');return;}var h=getSortedHist(h0);var area=document.getElementById('printArea');var dt='';try{dt=new Date().toLocaleDateString('fa-IR');}catch(e){dt='';}var s1=0;var s2=0;for(var i=0;i<h.length;i++){s1+=h[i].x;s2+=h[i].xNew;}var title='بلوکی';if(histView==='table'){title='جدولی';}var html='<div style="font-family:Tahoma;text-align:center;margin-bottom:10px"><h2>تورم‌نما | مبنای ۱۳۹۵ - گزارش تاریخچه '+title+'</h2><div>نسخه Ver 10.01 PWA | تاریخ چاپ: '+dt+' | تعداد: '+h.length+'</div><div>جمع واریز: '+faSep(Math.round(s1))+' تومان | جمع ارزش به‌روز: '+faSep(Math.round(s2))+' تومان</div></div>';if(histView==='table'){html+='<table><thead><tr><th>ردیف</th><th>مبلغ واریز(تومان)</th><th>زمان واریز</th><th>CPI روز واریز</th><th>زمان محاسبه</th><th>CPI مبنای محاسبه</th><th>ارزش به‌روز (تومان)</th><th>رشد</th></tr></thead><tbody>';for(var j=0;j<h.length;j++){var r=h[j];html+='<tr><td>'+(j+1)+'</td><td>'+enComma(r.x)+'</td><td>'+r.depLabel+'</td><td>'+enComma(r.y)+'</td><td>'+r.calcLabel+'</td><td>'+enComma(r.n)+'</td><td>'+enComma(Math.round(r.xNew))+'</td><td>'+r.growth+'</td></tr>';}html+='</tbody></table>';}else{for(var k=0;k<h.length;k++){var b=h[k];html+='<div style="border:1px solid #999;border-radius:8px;padding:8px;margin:6px 0;font-size:13px"><div>#'+(k+1)+' - '+b.depLabel+' به '+b.calcLabel+'</div><div>مبلغ واریز: '+enComma(b.x)+' تومان | شاخص تورم زمان واریز: '+enComma(b.y)+'</div><div>ارزش به‌روز: '+enComma(Math.round(b.xNew))+' تومان | شاخص تورم زمان محاسبه: '+enComma(b.n)+'</div><div>رشد: '+b.growth+' درصد</div></div>';}}html+='<div style="margin-top:10px;font-size:12px;text-align:center">کانال @bankiclub در بله</div>';area.innerHTML=html;try{window.print();}catch(e){alert('چاپ پشتیبانی نمی‌شود');}}
+function downloadExcel(){var h0=loadHist();if(!h0.length){alert('هنوز محاسبه‌ای ثبت نشده است');return;}var h=getSortedHist(h0);var s1=0;var s2=0;for(var i=0;i<h.length;i++){s1+=h[i].x;s2+=h[i].xNew;}var html='';html+='<html xmlns:o="urn:schemas-microsoft-com:office:office"><head><meta charset="utf-8"></head><body dir="rtl">';html+='<h2 style="font-family:Tahoma;text-align:center;color:#0A3B2E">تورم‌نما - گزارش تاریخچه (Ver 10.01 PWA)</h2>';html+='<div style="font-family:Tahoma">تعداد: '+h.length+' | جمع واریز: '+enComma(Math.round(s1))+' | جمع ارزش: '+enComma(Math.round(s2))+'</div><br>';html+='<table border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse;font-family:Tahoma;font-size:12px;direction:rtl;width:100%">';html+='<thead><tr>';var heads=['ردیف','مبلغ واریز(تومان)','زمان واریز','CPI روز واریز','زمان محاسبه','CPI مبنای محاسبه','ارزش به‌روز (تومان)','رشد'];for(var ch=0;ch<heads.length;ch++){html+='<th style="background:#0A3B2E;color:#F5EAD0;border:1px solid #C6A15B;padding:8px">'+heads[ch]+'</th>';}html+='</tr></thead><tbody>';for(var j=0;j<h.length;j++){var r=h[j];var bg='#FFFFFF';if(j%2===1){bg='#FAF7F0';}html+='<tr><td style="background:'+bg+';border:1px solid #C6A15B;text-align:center">'+(j+1)+'</td><td style="background:'+bg+';border:1px solid #C6A15B;text-align:center">'+enComma(r.x)+'</td><td style="background:'+bg+';border:1px solid #C6A15B;text-align:center">'+r.depLabel+'</td><td style="background:'+bg+';border:1px solid #C6A15B;text-align:center">'+enComma(r.y)+'</td><td style="background:'+bg+';border:1px solid #C6A15B;text-align:center">'+r.calcLabel+'</td><td style="background:'+bg+';border:1px solid #C6A15B;text-align:center">'+enComma(r.n)+'</td><td style="background:'+bg+';border:1px solid #C6A15B;text-align:center">'+enComma(Math.round(r.xNew))+'</td><td style="background:'+bg+';border:1px solid #C6A15B;text-align:center">'+r.growth+'</td></tr>';}html+='<tr><td style="background:#F5EAD0;border:1px solid #0A3B2E;font-weight:bold;text-align:center">جمع</td><td style="background:#F5EAD0;border:1px solid #0A3B2E;font-weight:bold;text-align:center">'+enComma(Math.round(s1))+'</td><td style="background:#F5EAD0;border:1px solid #0A3B2E;text-align:center">-</td><td style="background:#F5EAD0;border:1px solid #0A3B2E;text-align:center">-</td><td style="background:#F5EAD0;border:1px solid #0A3B2E;text-align:center">-</td><td style="background:#F5EAD0;border:1px solid #0A3B2E;text-align:center">-</td><td style="background:#F5EAD0;border:1px solid #0A3B2E;font-weight:bold;text-align:center">'+enComma(Math.round(s2))+'</td><td style="background:#F5EAD0;border:1px solid #0A3B2E;text-align:center">-</td></tr>';html+='</tbody></table></body></html>';var blob=null;try{blob=new Blob([html],{type:'application/vnd.ms-excel;charset=utf-8'});}catch(e){alert('دانلود پشتیبانی نمی‌شود');return;}var url=null;try{url=URL.createObjectURL(blob);}catch(e){alert('دانلود پشتیبانی نمی‌شود');return;}var a=document.createElement('a');a.href=url;a.download='Tavarom-History-Ver1001PWA.xls';document.body.appendChild(a);try{a.click();}catch(e){}setTimeout(function(){try{URL.revokeObjectURL(url);}catch(ee){}try{document.body.removeChild(a);}catch(ee){}},600);}
+function switchTab(n){currentTab=n;var ids=['calc','chart','total','help'];for(var i=0;i<ids.length;i++){document.getElementById('view-'+ids[i]).style.display='none';}document.getElementById('view-'+n).style.display='block';if(n==='calc'){document.getElementById('tabBtnCalc').className='active';document.getElementById('tabBtnChart').className='';document.getElementById('tabBtnTotal').className='';document.getElementById('tabBtnHelp').className='';}if(n==='chart'){document.getElementById('tabBtnChart').className='active';document.getElementById('tabBtnCalc').className='';document.getElementById('tabBtnTotal').className='';document.getElementById('tabBtnHelp').className='';playChart();}if(n==='total'){document.getElementById('tabBtnTotal').className='active';document.getElementById('tabBtnCalc').className='';document.getElementById('tabBtnChart').className='';document.getElementById('tabBtnHelp').className='';renderTotal();}if(n==='help'){document.getElementById('tabBtnHelp').className='active';document.getElementById('tabBtnCalc').className='';document.getElementById('tabBtnChart').className='';document.getElementById('tabBtnTotal').className='';}try{window.scrollTo(0,0);}catch(e){}}
+function switchCalcMode(m){if(m==='month'){document.getElementById('paneMonth').style.display='block';document.getElementById('paneYear').style.display='none';document.getElementById('btnModeMonth').className='active';document.getElementById('btnModeYear').className='';}else{document.getElementById('paneMonth').style.display='none';document.getElementById('paneYear').style.display='block';document.getElementById('btnModeYear').className='active';document.getElementById('btnModeMonth').className='';}}
+function toggleTheme(){var isD=false;try{if(document.body.className.indexOf('dark')>=0){isD=true;}}catch(e){}var nt='dark';if(isD){nt='light';}try{localStorage.setItem('inflation_theme_v1',nt);}catch(e){}applyTheme();}
+function applyTheme(){var t='light';try{t=localStorage.getItem('inflation_theme_v1')||'light';}catch(e){}var b=document.getElementById('themeBtnBottom');if(t==='dark'){document.body.className='dark';if(b){b.innerHTML='☀️';}}else{document.body.className='';if(b){b.innerHTML='🌙';}}}
+function setChartType(t){chartType=t;if(t==='line'){document.getElementById('btnChartLine').className='active';document.getElementById('btnChartBar').className='';}else{document.getElementById('btnChartBar').className='active';document.getElementById('btnChartLine').className='';}playChart();}
+function smoothPath(ctx,pts){if(pts.length<2){return;}ctx.moveTo(pts[0].x,pts[0].y);if(pts.length===2){ctx.lineTo(pts[1].x,pts[1].y);return;}for(var i=0;i<pts.length-1;i++){var p0=pts[i];var p1=pts[i+1];var mx=(p0.x+p1.x)/2;var my=(p0.y+p1.y)/2;if(i===0){ctx.lineTo(mx,my);}else{ctx.quadraticCurveTo(p0.x,p0.y,mx,my);}}var last=pts[pts.length-1];ctx.lineTo(last.x,last.y);}
+function fillRoundTop(ctx,x,y,w,h,r){if(h<=0||w<=0){return;}if(r>w/2){r=w/2;}if(r>h){r=h;}ctx.beginPath();ctx.moveTo(x,y+h);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h);ctx.closePath();ctx.fill();ctx.stroke();}
+function drawLinesFancy(cv,ctx,h,valsD,valsC,e){var W=640;var H=360;var pad=48;var n=h.length;var mn=cv._min;var mx=cv._max;ctx.clearRect(0,0,W,H);ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,W,H);ctx.strokeStyle='rgba(198,161,91,0.35)';ctx.lineWidth=1;try{ctx.setLineDash([5,5]);}catch(e){}for(var g=0;g<5;g++){var yy=pad+(H-2*pad)*g/4;ctx.beginPath();ctx.moveTo(pad,yy);ctx.lineTo(W-pad,yy);ctx.stroke();}try{ctx.setLineDash([]);}catch(e){}function X(i){if(n===1){return W/2;}return pad+(W-2*pad)*i/(n-1);}function Y(v){return H-pad-(H-2*pad)*(v-mn)/(mx-mn);}var cnt=Math.max(2,Math.floor(n*e)+1);if(cnt>n){cnt=n;}var ptsD=[];var ptsC=[];for(var i=0;i<cnt;i++){ptsD.push({x:X(i),y:Y(valsD[i])});ptsC.push({x:X(i),y:Y(valsC[i])});}if(ptsC.length>1){ctx.save();ctx.beginPath();ctx.moveTo(ptsC[0].x,H-pad);smoothPath(ctx,ptsC);ctx.lineTo(ptsC[cnt-1].x,H-pad);ctx.closePath();ctx.fillStyle='rgba(198,161,91,0.18)';ctx.fill();ctx.restore();}ctx.lineJoin='round';ctx.strokeStyle='#006845';ctx.lineWidth=2.6;ctx.beginPath();smoothPath(ctx,ptsD);ctx.stroke();ctx.strokeStyle='#C6A15B';ctx.lineWidth=3.2;ctx.beginPath();smoothPath(ctx,ptsC);ctx.stroke();for(var k=0;k<cnt;k++){ctx.fillStyle='#006845';ctx.beginPath();ctx.arc(X(k),Y(valsD[k]),5,0,6.283);ctx.fill();ctx.fillStyle='#C6A15B';ctx.beginPath();ctx.arc(X(k),Y(valsC[k]),6,0,6.283);ctx.fill();}ctx.fillStyle='#666';ctx.font='12px Tahoma';ctx.fillText(faSep(Math.round(mx)),6,pad);ctx.fillText(faSep(Math.round(mn)),6,H-pad);}
+function drawStackedFancy(cv,ctx,h,valsD,valsC,e){var W=640;var H=360;var pad=48;var n=h.length;var maxV=cv._maxV;if(!maxV){maxV=1;}var groupW=(W-2*pad)/n;var barW=groupW*0.52;if(barW>46){barW=46;}if(barW<18){barW=18;}ctx.clearRect(0,0,W,H);ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,W,H);try{ctx.setLineDash([5,5]);}catch(e){}ctx.strokeStyle='rgba(198,161,91,0.35)';for(var g=0;g<5;g++){var yy=pad+(H-2*pad)*g/4;ctx.beginPath();ctx.moveTo(pad,yy);ctx.lineTo(W-pad,yy);ctx.stroke();}try{ctx.setLineDash([]);}catch(e){}var geom=[];for(var i=0;i<n;i++){var dep=valsD[i];var calc=valsC[i];var total=dep;if(calc>total){total=calc;}var bottom=dep;if(calc<bottom){bottom=calc;}var diff=calc-dep;if(diff<0){diff=-diff;}var isUp=false;if(calc>=dep){isUp=true;}var cx=pad+groupW*i+groupW/2;var x=cx-barW/2;var totalH=(H-2*pad)*total/maxV*e;var bottomH=(H-2*pad)*bottom/maxV*e;var topH=(H-2*pad)*diff/maxV*e;var yTotal=H-pad-totalH;var ySplit=H-pad-bottomH;geom.push({x:x,cx:cx,split:ySplit,top:yTotal});ctx.fillStyle='#006845';ctx.strokeStyle='#0A3B2E';ctx.lineWidth=1.2;fillRoundTop(ctx,x,ySplit,barW,bottomH,4);if(topH>1){if(isUp){ctx.fillStyle='#C6A15B';ctx.strokeStyle='#8A6D2B';}else{ctx.fillStyle='#C8102E';ctx.strokeStyle='#7A0B1E';}ctx.lineWidth=1.2;fillRoundTop(ctx,x,yTotal,barW,topH,7);}ctx.fillStyle='#555';ctx.font='12px Tahoma';ctx.textAlign='center';ctx.fillText(faNum(i+1),cx,H-pad+18);ctx.textAlign='start';}cv._barGeom=geom;ctx.fillStyle='#666';ctx.font='12px Tahoma';ctx.fillText(faSep(Math.round(maxV)),6,pad);ctx.fillText('۰',6,H-pad);}
+function playChart(){try{var cv=document.getElementById('chartCv');var ctx=cv.getContext('2d');if(cv._raf){cancelFrame(cv._raf);}var h0=loadHist();var h=getDepSortedHist(h0);if(!h.length){ctx.clearRect(0,0,640,360);ctx.fillStyle='#fff';ctx.fillRect(0,0,640,360);document.getElementById('chartMsg').innerHTML='هنوز محاسبه‌ای ثبت نشده است';cv._valsDep=null;cv._valsCalc=null;return;}var valsD=[];var valsC=[];for(var i=0;i<h.length;i++){valsD.push(h[i].x);valsC.push(h[i].xNew);}cv._hist=h;cv._valsDep=valsD;cv._valsCalc=valsC;if(chartType==='bar'){var maxV=0;for(var j=0;j<valsD.length;j++){var mm=valsD[j];if(valsC[j]>mm){mm=valsC[j];}if(mm>maxV){maxV=mm;}}if(!maxV){maxV=1;}cv._min=0;cv._max=maxV;cv._maxV=maxV;var t0=nowMs();function frameBar(){var p=(nowMs()-t0)/1150;if(p>1){p=1;}var ee=1-Math.pow(1-p,3);drawStackedFancy(cv,ctx,h,valsD,valsC,ee);if(p<1){cv._raf=nextFrame(frameBar);}}frameBar();document.getElementById('chartMsg').innerHTML='تعداد: '+faNum(h.length)+' | هر میله یک محاسبه (سبز واریز + طلایی رشد)';}else{var mn=valsD[0];var mx=valsD[0];for(var a=0;a<valsD.length;a++){if(valsD[a]<mn){mn=valsD[a];}if(valsD[a]>mx){mx=valsD[a];}if(valsC[a]<mn){mn=valsC[a];}if(valsC[a]>mx){mx=valsC[a];}}if(mn===mx){mn=mn*0.9;mx=mx*1.1;}var pd=(mx-mn)*0.1;mn-=pd;mx+=pd;cv._min=mn;cv._max=mx;var t2=nowMs();function frameLine(){var pp=(nowMs()-t2)/1200;if(pp>1){pp=1;}var e2=1-Math.pow(1-pp,3);drawLinesFancy(cv,ctx,h,valsD,valsC,e2);if(pp<1){cv._raf=nextFrame(frameLine);}}frameLine();document.getElementById('chartMsg').innerHTML='تعداد: '+faNum(h.length);}}catch(e){}}
+function hideTip(){var tip=document.getElementById('chartTip');if(tip){tip.style.display='none';}}
+function chartHover(ev){try{var cv=document.getElementById('chartCv');if(!cv._valsDep||!cv._hist){return;}var rect=cv.getBoundingClientRect();var cx=0;var cy=0;if(ev.touches&&ev.touches.length){cx=ev.touches[0].clientX;cy=ev.touches[0].clientY;}else{cx=ev.clientX;cy=ev.clientY;}var rx=(cx-rect.left)*(cv.width/rect.width);var ry=(cy-rect.top)*(cv.height/rect.height);var n=cv._hist.length;var W=640;var H=360;var pad=48;var tip=document.getElementById('chartTip');var idx=0;var useDep=true;if(chartType==='bar'){var groupW=(W-2*pad)/n;var best=1e18;for(var i=0;i<n;i++){var cxg=pad+groupW*i+groupW/2;var d=rx-cxg;if(d<0){d=-d;}if(d<best){best=d;idx=i;}}var geom=null;if(cv._barGeom&&cv._barGeom[idx]){geom=cv._barGeom[idx];if(ry>=geom.split){useDep=true;}else{useDep=false;}}}else{var mn=cv._min;var mx=cv._max;function XX(i){if(n===1){return W/2;}return pad+(W-2*pad)*i/(n-1);}function YY(v){return H-pad-(H-2*pad)*(v-mn)/(mx-mn);}var bi=0;var bd=1e18;for(var k=0;k<n;k++){var d2=rx-XX(k);if(d2<0){d2=-d2;}if(d2<bd){bd=d2;bi=k;}}idx=bi;var pyD=YY(cv._valsDep[idx]);var pyC=YY(cv._valsCalc[idx]);var dd=pyD-ry;if(dd<0){dd=-dd;}var dc=pyC-ry;if(dc<0){dc=-dc;}if(dd<dc){useDep=true;}else{useDep=false;}}var r=cv._hist[idx];var txt='';if(useDep){txt='مبلغ واریز\nمبلغ: '+enComma(r.x)+' تومان\nشاخص تورم زمان واریز: '+enComma(r.y)+'\nتاریخ: '+r.depLabel;}else{txt='ارزش به‌روز شده\nمبلغ: '+enComma(Math.round(r.xNew))+' تومان\nشاخص تورم زمان محاسبه: '+enComma(r.n)+'\nتاریخ: '+r.calcLabel+'\nرشد: '+enComma(r.growth)+' درصد';}tip.innerText=txt;tip.style.display='block';}catch(e){}}
+try{loadRemoteCache();}catch(e){}
+try{loadManual();}catch(e){}
+try{fillYears('selYY',1404,1375,1405);}catch(e){}
+try{fillYears('selYN',1405,1375,1405);}catch(e){}
+try{fillMonths('selMY',0,false);}catch(e){}
+try{fillMonths('selMN',5,false);}catch(e){}
+try{fillYears('selYY_A',1395,1375,1404);}catch(e){}
+try{fillYears('selYN_A',1404,1375,1404);}catch(e){}
+try{fillYears('updYear',1405,1375,1405);}catch(e){}
+try{fillMonths('updMonth',6,true);}catch(e){}
+try{loadDraft();}catch(e){}
+try{refreshMonthAvailability();}catch(e){}
+try{autoFillCPI();}catch(e){}
+try{autoFillCPI_A();}catch(e){}
+try{updateAmtBox('xAmt');}catch(e){}
+try{updateAmtBox('xAmt_A');}catch(e){}
+try{applyTheme();}catch(e){}
+try{loadHistView();}catch(e){}
+try{loadHistSort();}catch(e){}
+try{renderTotal();}catch(e){}
+try{updateCPIStatus();}catch(e){}
+try{var _bb=document.getElementById('btnHistBlock');var _bt=document.getElementById('btnHistTable');if(_bb){if(histView==='block'){_bb.className='active';}else{_bb.className='';}}if(_bt){if(histView==='table'){_bt.className='active';}else{_bt.className='';}}}catch(e){}
+try{var _bc=document.getElementById('btnSortCalc');var _bd=document.getElementById('btnSortDep');if(_bc){if(histSort==='calc'){_bc.className='active';}else{_bc.className='';}}if(_bd){if(histSort==='dep'){_bd.className='active';}else{_bd.className='';}}}catch(e){}
+try{setChartType('line');}catch(e){}
+try{switchTab('calc');}catch(e){}
+try{switchCalcMode('month');}catch(e){}
+try{checkAgree();}catch(e){}
+</script>
+</body>
+</html>
